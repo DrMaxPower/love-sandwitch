@@ -29,4 +29,18 @@ def get_sales_data():
     data_str = input('Enter your data here: ')
     print(f'the data you send was {data_str}')
 
+    sales_data = data_str.split(',')
+    validate_data(sales_data)
+
+def validate_data(values):
+    """ validate input data from get_sales_data """
+    print(values)
+    try:
+        if len(values) != 6:
+            raise ValueError(
+                f"expected six (6) number separated by comma (,) but {len(values) was given}"
+            )
+    except ValueError as e:
+        print(f"Invalid data: {e}, plz do it again, becouse, if tomorrow never comes \n")
+
 get_sales_data()
