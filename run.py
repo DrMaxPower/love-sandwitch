@@ -35,6 +35,8 @@ def get_sales_data():
         if validate_data(sales_data):
             print("data is valid")
             break
+        
+    return sales_data
 
 def validate_data(values):
     """ validate input data from get_sales_data """
@@ -48,9 +50,18 @@ def validate_data(values):
     except ValueError as e:
         print(f"Invalid data: {e} \n")
         return False
-    
     return True
 
 
-data = get_sales_data()
+def update_sales_worksheet(data):
+    """ Uppdate sales worksheet, add a new row of data """
+    print("updating sales woksheet...\n")
+    sales_worksheet = SHEET.worksheet("sales") #reference the name of the worksheet in csv
+    sales_worksheet.append_row(data)
+    print("Sales worksheet updated successfully. \n")
 
+
+
+data = get_sales_data()
+sales_data = [int(num) for num in data]
+update_sales_worksheet(sales_data)
