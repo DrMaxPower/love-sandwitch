@@ -12,19 +12,14 @@ SCOPE = [
 CREDS = Credentials.from_service_account_file('creds.json')
 SCOPED_CREDS = CREDS.with_scopes(SCOPE)
 GSPREAD_CLIENT = gspread.authorize(SCOPED_CREDS)
-SHEET = GSPREAD_CLIENT.open("love_sandwiches") # only smallcap allowed
+# only smallcap allowed on open filen
+SHEET = GSPREAD_CLIENT.open("love_sandwiches")
 
-# sales = SHEET.worksheet('sales')
-
-# data = sales.get_all_values()
-
-# print(data)
 
 def get_sales_data():
     """ get sales figures from user """
 
     while True:
-    
         print('Plz enter sales data from the last market day')
         print('Data input in six numbers, separated by commas')
         print("Example: 6,5,4,3,2,1\n")
@@ -64,6 +59,15 @@ def update_sales_worksheet(data):
     print("Sales worksheet updated successfully. \n")
 
 
+def update_surplus_worksheet(data):
+    """ Uppdate surplus worksheet, add a new row of data """
+    print("updating surplus woksheet...\n")
+    # reference the name of the worksheet in csv
+    surplus_worksheet = SHEET.worksheet("surplus")
+    surplus_worksheet.append_row(data)
+    print("surplus worksheet updated successfully. \n")
+
+
 def calculate_surplus_data(sales_row):
     """
     compare sales with stock:
@@ -89,7 +93,10 @@ def main():
     sales_data = [int(num) for num in data]
     update_sales_worksheet(sales_data)
     new_surplus_data = calculate_surplus_data(sales_data)
+    update_surplus_worksheet(new_surplus_data)
+    
     print(new_surplus_data)
+
 
 
 print("Welcome to love sandwiches data automation")
